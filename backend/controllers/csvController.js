@@ -1,50 +1,55 @@
 import Data from "../models/Data.js";
-import readCSV from "../utils/readCSV.js";
-import fs from "fs";
+// import readCSV from "../utils/readCSV.js";
+// import fs from "fs";
 
-export const uploadCSV = async (req, res) => {
-  try {
 
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
+import csv from "csv-parser";
+import { Readable } from "stream";
 
-    const filePath = req.file.path;
 
-    console.log("File path:", filePath);
+// export const uploadCSV = async (req, res) => {
+//   try {
 
-    const data = await readCSV(filePath);
+//     if (!req.file) {
+//       return res.status(400).json({ message: "No file uploaded" });
+//     }
 
-    console.log("Rows:", data.length);
+//     const filePath = req.file.path;
 
-    await Data.deleteMany();
+//     console.log("File path:", filePath);
 
-    // insert small batches (safe)
-    const chunkSize = 100;
+//     const data = await readCSV(filePath);
 
-    for (let i = 0; i < data.length; i += chunkSize) {
-      const chunk = data.slice(i, i + chunkSize);
-      await Data.insertMany(chunk);
-    }
+//     console.log("Rows:", data.length);
 
-    // optional delete file after read
-    fs.unlinkSync(filePath);
+//     await Data.deleteMany();
 
-    res.json({
-      message: "CSV uploaded",
-      count: data.length,
-    });
+//     // insert small batches (safe)
+//     const chunkSize = 100;
 
-  } catch (error) {
+//     for (let i = 0; i < data.length; i += chunkSize) {
+//       const chunk = data.slice(i, i + chunkSize);
+//       await Data.insertMany(chunk);
+//     }
 
-    console.log("ERROR:", error);
+//     // optional delete file after read
+//     fs.unlinkSync(filePath);
 
-    res.status(500).json({
-      message: "Upload failed",
-      error: error.message,
-    });
-  }
-};
+//     res.json({
+//       message: "CSV uploaded",
+//       count: data.length,
+//     });
+
+//   } catch (error) {
+
+//     console.log("ERROR:", error);
+
+//     res.status(500).json({
+//       message: "Upload failed",
+//       error: error.message,
+//     });
+//   }
+// };
 
 
 export const getData = async (req, res) => {
@@ -57,5 +62,40 @@ export const getData = async (req, res) => {
   } catch (error) {
 
     res.status(500).json(error);
+  }
+};
+
+
+
+
+export const uploadCSV = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const results = [];
+
+    const stream = Readable.from(req.file.buffer);
+
+    stream
+      .pipe(csv())
+      .on("data", (row) => results.push(row))
+      .on("end", async () => {
+        await Data.deleteMany();
+
+        const chunkSize = 100;
+        for (let i = 0; i < results.length; i += chunkSize) {
+          await Data.insertMany(results.slice(i, i + chunkSize));
+        }
+
+        res.json({
+          message: "CSV uploaded successfully",
+          count: results.length,
+        });
+      });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
