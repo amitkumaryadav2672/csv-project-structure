@@ -1,0 +1,227 @@
+/* ================= Global ================= */
+
+body {
+  background: #f4f6fb;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+
+/* ================= Upload Page ================= */
+
+.center {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+
+.uploadCard {
+
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 12px;
+
+  width: 450px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+  text-align: center;
+
+}
+
+
+.drop {
+
+  border: 2px dashed #aaa;
+
+  padding: 40px;
+
+  margin: 20px 0;
+
+  cursor: pointer;
+
+  border-radius: 8px;
+
+  transition: 0.2s;
+
+}
+
+
+.drop:hover {
+
+  border-color: #007bff;
+
+  background: #f0f7ff;
+
+}
+
+
+button {
+
+  padding: 10px 25px;
+
+  background: #007bff;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+}
+
+
+button:hover {
+
+  background: #0056b3;
+
+}
+
+
+.progress {
+
+  width: 100%;
+
+  height: 10px;
+
+  background: #eee;
+
+  margin-top: 10px;
+
+  border-radius: 5px;
+
+  overflow: hidden;
+
+}
+
+
+.bar {
+
+  height: 10px;
+
+  background: #28a745;
+
+}
+
+
+
+/* ================= Table Page ================= */
+
+.tablePage {
+
+  padding: 20px;
+
+}
+
+
+/* dashboard cards */
+
+.cards {
+
+  display: flex;
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+
+}
+
+
+.cardBox {
+
+  background: #eee;
+
+  padding: 15px;
+
+  border-radius: 8px;
+
+  width: 150px;
+
+  text-align: center;
+
+}
+
+
+
+/* filter */
+
+.filterBar {
+
+  display: flex;
+
+  gap: 10px;
+
+  margin: 10px 0;
+
+}
+
+
+.filterBar select,
+.filterBar input {
+
+  padding: 6px;
+
+  border: 1px solid #ccc;
+
+}
+
+
+
+/* table */
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: white;
+
+}
+
+
+th,
+td {
+
+  border: 1px solid #ccc;
+
+  padding: 6px;
+
+  font-size: 13px;
+
+}
+
+
+th {
+
+  background: #f0f0f0;
+
+}
+
+
+
+/* pagination */
+
+.pagination {
+
+  margin-top: 10px;
+
+}
+
+
+.pagination button {
+
+  margin: 5px;
+
+}
